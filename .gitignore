@@ -1,0 +1,6 @@
+cae_imagens_temp/
+token.json
+resultados_drive.json
+segredos.py
+__pycache__/
+*.pyc
