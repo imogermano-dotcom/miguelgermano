@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figueira da Foz — Miguel Germano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg2: #111113;
+    --bg3: #1a1a1e;
+    --gold: #c9a96e;
+    --gold2: #e8d5a3;
+    --white: #f0ece4;
+    --muted: #6b6860;
+    --border: rgba(201,169,110,0.15);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 4rem; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(10,10,11,0.95), transparent); backdrop-filter: blur(8px); }
+  .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 300; color: var(--gold); letter-spacing: 0.05em; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 0 4rem; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(201,169,110,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 80% 30%, rgba(201,169,110,0.04) 0%, transparent 50%); }
+  .hero-content { position: relative; max-width: 900px; text-align: center; }
+  .hero-label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; opacity: 0; animation: fadeUp 1s ease 0.3s forwards; }
+  .hero-title { font-family: var(--font-display); font-size: clamp(4rem, 10vw, 8rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 1rem; color: var(--muted); max-width: 500px; margin: 0 auto 3rem; opacity: 0; animation: fadeUp 1s ease 0.7s forwards; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2.5rem; border: 1px solid var(--border); color: var(--gold); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: all 0.3s; opacity: 0; animation: fadeUp 1s ease 0.9s forwards; }
+  .hero-cta:hover { background: rgba(201,169,110,0.08); border-color: var(--gold); }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; animation: fadeIn 2s ease 1.5s both; }
+  .hero-scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollLine 2s ease infinite; }
+  section { padding: 8rem 4rem; }
+  .section-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc { color: var(--muted); max-width: 500px; margin-bottom: 4rem; font-size: 0.95rem; }
+  .divider { width: 60px; height: 1px; background: var(--gold); margin: 1.5rem 0; opacity: 0.4; }
+  #eventos { background: var(--bg); }
+  .eventos-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem; }
+  .eventos-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .filter-btn { padding: 0.5rem 1.25rem; border: 1px solid var(--border); background: none; color: var(--muted); font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+  .filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,169,110,0.05); }
+  .eventos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5px; background: var(--border); }
+  .evento-card { background: var(--bg); overflow: hidden; cursor: pointer; transition: background 0.3s; position: relative; }
+  .evento-card:hover { background: var(--bg2); }
+  .evento-img-wrap { overflow: hidden; }
+  .evento-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: grayscale(20%) brightness(0.85); transition: all 0.5s; }
+  .evento-card:hover .evento-img { filter: grayscale(0%) brightness(1); transform: scale(1.02); }
+  .evento-img-placeholder { width: 100%; aspect-ratio: 4/3; background: var(--bg3); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 2rem; }
+  .evento-body { padding: 1.5rem; }
+  .evento-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .evento-tag { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: 0.2rem 0.6rem; }
+  .evento-data { font-size: 0.75rem; color: var(--muted); }
+  .evento-titulo { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.5rem; color: var(--white); }
+  .evento-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .evento-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .evento-local { font-size: 0.75rem; color: var(--muted); }
+  .evento-preco { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); font-style: italic; }
+  .evento-link { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0; transition: opacity 0.3s; display: block; margin-top: 0.75rem; }
+  .evento-card:hover .evento-link { opacity: 1; }
+  .loading { text-align: center; padding: 4rem; color: var(--muted); font-family: var(--font-display); font-size: 1.5rem; font-style: italic; grid-column: 1/-1; }
+  #noticias { background: var(--bg2); }
+  #sobre { background: var(--bg); }
+  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .sobre-img-frame { width: 100%; aspect-ratio: 3/4; background: var(--bg3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); font-family: var(--font-display); font-size: 1rem; font-style: italic; }
+  .sobre-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+  .stat { border-left: 1px solid var(--border); padding-left: 1.5rem; }
+  .stat-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  #imoveis { background: var(--bg2); }
+  .imoveis-cta { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1.25rem 3rem; background: var(--gold); color: var(--bg); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; transition: all 0.3s; margin-top: 2rem; }
+  .imoveis-cta:hover { background: var(--gold2); }
+  .imoveis-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+  .feature { padding: 2rem; border: 1px solid var(--border); transition: border-color 0.3s; }
+  .feature:hover { border-color: var(--gold); }
+  .feature-icon { font-size: 1.5rem; margin-bottom: 1rem; color: var(--gold); }
+  .feature-title { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .feature-text { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+  #contacto { background: var(--bg); }
+  .contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-label { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .form-input, .form-textarea { width: 100%; background: none; border: none; border-bottom: 1px solid var(--border); color: var(--white); font-family: var(--font-body); font-size: 1rem; padding: 0.75rem 0; outline: none; transition: border-color 0.3s; }
+  .form-input:focus, .form-textarea:focus { border-bottom-color: var(--gold); }
+  .form-textarea { resize: none; height: 120px; }
+  .form-submit { padding: 1rem 3rem; background: none; border: 1px solid var(--gold); color: var(--gold); font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; margin-top: 1rem; }
+  .form-submit:hover { background: rgba(201,169,110,0.08); }
+  .info-item { margin-bottom: 2.5rem; }
+  .info-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .info-value { font-family: var(--font-display); font-size: 1.3rem; color: var(--white); }
+  footer { padding: 3rem 4rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); font-style: italic; }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { nav { padding: 1.5rem 2rem; } .nav-links { display: none; } section { padding: 5rem 2rem; } #hero { padding: 0 2rem; } .sobre-grid, .contacto-grid { grid-template-columns: 1fr; } .imoveis-features { grid-template-columns: 1fr; } footer { padding: 2rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">Miguel Germano</a>
+  <ul class="nav-links">
+    <li><a href="#eventos">Agenda</a></li>
+    <li><a href="#noticias">Notícias</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#imoveis">Imobiliário</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-label">Figueira da Foz · Portugal</p>
+    <h1 class="hero-title">A cidade<br>que <em>respira</em><br>cultura</h1>
+    <p class="hero-sub">Agenda cultural, notícias e o melhor do imobiliário na Figueira da Foz.</p>
+    <a href="#eventos" class="hero-cta">Ver agenda →</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<section id="eventos">
+  <div class="eventos-header reveal">
+    <div>
+      <p class="section-label">Agenda Cultural</p>
+      <h2 class="section-title">O que <em>acontece</em><br>na Figueira</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Espectáculos, exposições e eventos culturais actualizados automaticamente.</p>
+    </div>
+    <div class="eventos-filter">
+      <button class="filter-btn active" onclick="filtrarEventos('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filtrarEventos('teatro', this)">Teatro</button>
+      <button class="filter-btn" onclick="filtrarEventos('cinema', this)">Cinema</button>
+      <button class="filter-btn" onclick="filtrarEventos('musica', this)">Música</button>
+      <button class="filter-btn" onclick="filtrarEventos('exposicao', this)">Exposição</button>
+    </div>
+  </div>
+  <div class="eventos-grid" id="eventos-grid">
+    <div class="loading">A carregar eventos...</div>
+  </div>
+</section>
+
+<section id="noticias">
+  <div class="reveal">
+    <p class="section-label">Actualidade</p>
+    <h2 class="section-title">Notícias da <em>Figueira</em></h2>
+    <div class="divider"></div>
+    <p class="section-desc">As últimas novidades da cidade, imobiliário e região — em breve.</p>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="sobre-grid">
+    <div class="reveal">
+      <p class="section-label">Sobre mim</p>
+      <h2 class="section-title">Miguel<br><em>Germano</em></h2>
+      <div class="divider"></div>
+      <p style="color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem;">Director Comercial da Figueira Home, com mais de 18 anos de experiência no mercado imobiliário da Figueira da Foz. Apaixonado pela cidade e pelo potencial da região Centro de Portugal.</p>
+      <p style="color: var(--muted); line-height: 1.8;">Comprometido com a inovação no sector imobiliário, combinando tecnologia e experiência humana para oferecer o melhor serviço a compradores e vendedores.</p>
+      <div class="sobre-stats">
+        <div class="stat"><div class="stat-num">18+</div><div class="stat-label">Anos de experiência</div></div>
+        <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Negócios concluídos</div></div>
+        <div class="stat"><div class="stat-num">#1</div><div class="stat-label">Figueira da Foz</div></div>
+        <div class="stat"><div class="stat-num">2006</div><div class="stat-label">No mercado</div></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="sobre-img-frame"><span>Fotografia</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="imoveis">
+  <div class="reveal">
+    <p class="section-label">Imobiliário</p>
+    <h2 class="section-title">Figueira <em>Home</em></h2>
+    <div class="divider"></div>
+    <p class="section-desc">A sua agência imobiliária de referência na Figueira da Foz e região.</p>
+    <a href="https://figueirahome.pt" target="_blank" class="imoveis-cta">Ver imóveis disponíveis →</a>
+  </div>
+  <div class="imoveis-features reveal">
+    <div class="feature"><div class="feature-icon">⌂</div><div class="feature-title">Compra & Venda</div><p class="feature-text">Avaliação rigorosa e acompanhamento personalizado em todo o processo.</p></div>
+    <div class="feature"><div class="feature-icon">◎</div><div class="feature-title">Arrendamento</div><p class="feature-text">Gestão completa de arrendamentos com contratos seguros.</p></div>
+    <div class="feature"><div class="feature-icon">◈</div><div class="feature-title">Consultoria</div><p class="feature-text">Aconselhamento especializado sobre oportunidades de investimento local.</p></div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="contacto-grid">
+    <div class="reveal">
+      <p class="section-label">Contacto</p>
+      <h2 class="section-title">Fale <em>comigo</em></h2>
+      <div class="divider"></div>
+      <form onsubmit="enviarFormulario(event)">
+        <div class="form-group"><label class="form-label">Nome</label><input type="text" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Mensagem</label><textarea class="form-textarea" required></textarea></div>
+        <button type="submit" class="form-submit">Enviar mensagem</button>
+      </form>
+    </div>
+    <div class="reveal" style="padding-top: 1rem;">
+      <div class="info-item"><p class="info-label">Localização</p><p class="info-value">Figueira da Foz, Portugal</p></div>
+      <div class="info-item"><p class="info-label">Email</p><p class="info-value">miguel@figueirahome.pt</p></div>
+      <div class="info-item"><p class="info-label">Agência</p><p class="info-value">Figueira Home</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Miguel Germano</div>
+  <p class="footer-copy">© 2026 · Figueira da Foz · Figueira Home</p>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://kddjmksicdbudyyxqbfs.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZGpta3NpY2RidWR5eXhxYmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2OTM1MzYsImV4cCI6MjA5MDI2OTUzNn0.PVOCfAHHRvk7DBjUqUaSrTmUD8klltpSpe5P9jij_rY';
+
+let todosEventos = [];
+
+async function carregarEventos() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/eventos?select=*&order=data_post.asc.nullslast`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    todosEventos = await res.json();
+    renderEventos(todosEventos);
+  } catch(e) {
+    document.getElementById('eventos-grid').innerHTML = '<div class="loading">Não foi possível carregar os eventos.</div>';
+  }
+}
+
+function getTipo(ev) {
+  const t = ((ev.titulo || '') + ' ' + (ev.descricao || '')).toLowerCase();
+  if (t.includes('teatro') || t.includes('comédia') || t.includes('peça')) return 'teatro';
+  if (t.includes('cinema') || t.includes('filme')) return 'cinema';
+  if (t.includes('concerto') || t.includes('música') || t.includes('musical')) return 'musica';
+  if (t.includes('exposição') || t.includes('expo')) return 'exposicao';
+  return 'outro';
+}
+
+function filtrarEventos(tipo, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtrados = tipo === 'todos' ? todosEventos : todosEventos.filter(e => getTipo(e) === tipo);
+  renderEventos(filtrados);
+}
+
+function renderEventos(eventos) {
+  const grid = document.getElementById('eventos-grid');
+  if (!eventos || eventos.length === 0) {
+    grid.innerHTML = '<div class="loading">Sem eventos disponíveis.</div>';
+    return;
+  }
+  const labels = { teatro: 'Teatro', cinema: 'Cinema', musica: 'Música', exposicao: 'Exposição', outro: 'Evento' };
+  grid.innerHTML = eventos.map(ev => {
+    const tipo = getTipo(ev);
+    const img = ev.imagem_url
+      ? `<div class="evento-img-wrap"><img class="evento-img" src="${ev.imagem_url}" alt="${ev.titulo||''}" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\\'evento-img-placeholder\\'>🎭</div>'"></div>`
+      : '<div class="evento-img-placeholder">🎭</div>';
+    return `<div class="evento-card">
+      ${img}
+      <div class="evento-body">
+        <div class="evento-meta">
+          <span class="evento-tag">${labels[tipo]}</span>
+          ${ev.data_evento ? `<span class="evento-data">${ev.data_evento}</span>` : ''}
+        </div>
+        <h3 class="evento-titulo">${ev.titulo || 'Sem título'}</h3>
+        ${ev.descricao ? `<p class="evento-desc">${ev.descricao}</p>` : ''}
+        <div class="evento-footer">
+          <span class="evento-local">${ev.local_evento || 'CAE — Figueira da Foz'}</span>
+          <span class="evento-preco">${ev.preco || ''}</span>
+        </div>
+        ${ev.instagram_url ? `<a href="${ev.instagram_url}" target="_blank" class="evento-link">Ver no Instagram →</a>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function enviarFormulario(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Enviado ✓';
+  setTimeout(() => { btn.textContent = 'Enviar mensagem'; }, 3000);
+}
+
+carregarEventos();
+</script>
+</body>
+</html>
