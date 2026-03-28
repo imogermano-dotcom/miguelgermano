@@ -22,11 +22,15 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  /* NAV */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 4rem; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(10,10,11,0.95), transparent); backdrop-filter: blur(8px); }
   .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 300; color: var(--gold); letter-spacing: 0.05em; text-decoration: none; }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
   .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
   #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 0 4rem; }
   .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 20% 50%, rgba(201,169,110,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 80% at 80% 30%, rgba(201,169,110,0.04) 0%, transparent 50%); }
   .hero-content { position: relative; max-width: 900px; text-align: center; }
@@ -38,19 +42,23 @@
   .hero-cta:hover { background: rgba(201,169,110,0.08); border-color: var(--gold); }
   .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; animation: fadeIn 2s ease 1.5s both; }
   .hero-scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollLine 2s ease infinite; }
+
+  /* SECTIONS */
   section { padding: 8rem 4rem; }
   .section-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
   .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
   .section-title em { font-style: italic; color: var(--gold); }
   .section-desc { color: var(--muted); max-width: 500px; margin-bottom: 4rem; font-size: 0.95rem; }
   .divider { width: 60px; height: 1px; background: var(--gold); margin: 1.5rem 0; opacity: 0.4; }
+
+  /* EVENTOS */
   #eventos { background: var(--bg); }
   .eventos-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem; }
   .eventos-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .filter-btn { padding: 0.5rem 1.25rem; border: 1px solid var(--border); background: none; color: var(--muted); font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
   .filter-btn.active, .filter-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,169,110,0.05); }
   .eventos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5px; background: var(--border); }
-  .evento-card { background: var(--bg); overflow: hidden; cursor: pointer; transition: background 0.3s; position: relative; }
+  .evento-card { background: var(--bg); overflow: hidden; cursor: pointer; transition: background 0.3s; }
   .evento-card:hover { background: var(--bg2); }
   .evento-img-wrap { overflow: hidden; }
   .evento-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: grayscale(20%) brightness(0.85); transition: all 0.5s; }
@@ -67,8 +75,34 @@
   .evento-preco { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); font-style: italic; }
   .evento-link { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0; transition: opacity 0.3s; display: block; margin-top: 0.75rem; }
   .evento-card:hover .evento-link { opacity: 1; }
-  .loading { text-align: center; padding: 4rem; color: var(--muted); font-family: var(--font-display); font-size: 1.5rem; font-style: italic; grid-column: 1/-1; }
+
+  /* NOTICIAS */
   #noticias { background: var(--bg2); }
+  .noticias-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem; }
+  .noticias-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .noticias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5px; background: var(--border); }
+  .noticia-card { background: var(--bg2); overflow: hidden; cursor: pointer; transition: background 0.3s; display: flex; flex-direction: column; }
+  .noticia-card:hover { background: var(--bg3); }
+  .noticia-img-wrap { overflow: hidden; }
+  .noticia-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; filter: grayscale(30%) brightness(0.8); transition: all 0.5s; }
+  .noticia-card:hover .noticia-img { filter: grayscale(0%) brightness(0.95); transform: scale(1.02); }
+  .noticia-img-placeholder { width: 100%; aspect-ratio: 16/9; background: var(--bg3); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 1.5rem; }
+  .noticia-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+  .noticia-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+  .noticia-fonte { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border); padding: 0.2rem 0.6rem; }
+  .noticia-data { font-size: 0.72rem; color: var(--muted); }
+  .noticia-titulo { font-family: var(--font-display); font-size: 1.2rem; font-weight: 400; line-height: 1.3; margin-bottom: 0.5rem; color: var(--white); flex: 1; }
+  .noticia-resumo { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .noticia-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid var(--border); margin-top: auto; }
+  .noticia-engagement { display: flex; gap: 0.75rem; font-size: 0.72rem; color: var(--muted); }
+  .noticia-engagement span { display: flex; align-items: center; gap: 0.3rem; }
+  .noticia-link { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; opacity: 0; transition: opacity 0.3s; }
+  .noticia-card:hover .noticia-link { opacity: 1; }
+
+  /* LOADING */
+  .loading { text-align: center; padding: 4rem; color: var(--muted); font-family: var(--font-display); font-size: 1.5rem; font-style: italic; grid-column: 1/-1; }
+
+  /* SOBRE */
   #sobre { background: var(--bg); }
   .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
   .sobre-img-frame { width: 100%; aspect-ratio: 3/4; background: var(--bg3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--muted); font-family: var(--font-display); font-size: 1rem; font-style: italic; }
@@ -76,6 +110,8 @@
   .stat { border-left: 1px solid var(--border); padding-left: 1.5rem; }
   .stat-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 0.25rem; }
   .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* IMOVEIS */
   #imoveis { background: var(--bg2); }
   .imoveis-cta { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1.25rem 3rem; background: var(--gold); color: var(--bg); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; transition: all 0.3s; margin-top: 2rem; }
   .imoveis-cta:hover { background: var(--gold2); }
@@ -85,6 +121,8 @@
   .feature-icon { font-size: 1.5rem; margin-bottom: 1rem; color: var(--gold); }
   .feature-title { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; }
   .feature-text { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* CONTACTO */
   #contacto { background: var(--bg); }
   .contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
   .form-group { margin-bottom: 1.5rem; }
@@ -97,15 +135,28 @@
   .info-item { margin-bottom: 2.5rem; }
   .info-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
   .info-value { font-family: var(--font-display); font-size: 1.3rem; color: var(--white); }
+
+  /* FOOTER */
   footer { padding: 3rem 4rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
   .footer-logo { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); font-style: italic; }
   .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+  /* ANIMATIONS */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
-  @media (max-width: 768px) { nav { padding: 1.5rem 2rem; } .nav-links { display: none; } section { padding: 5rem 2rem; } #hero { padding: 0 2rem; } .sobre-grid, .contacto-grid { grid-template-columns: 1fr; } .imoveis-features { grid-template-columns: 1fr; } footer { padding: 2rem; } }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 2rem; }
+    #hero { padding: 0 2rem; }
+    .sobre-grid, .contacto-grid { grid-template-columns: 1fr; }
+    .imoveis-features { grid-template-columns: 1fr; }
+    footer { padding: 2rem; }
+  }
 </style>
 </head>
 <body>
@@ -135,6 +186,7 @@
   </div>
 </section>
 
+<!-- EVENTOS -->
 <section id="eventos">
   <div class="eventos-header reveal">
     <div>
@@ -156,15 +208,29 @@
   </div>
 </section>
 
+<!-- NOTICIAS -->
 <section id="noticias">
-  <div class="reveal">
-    <p class="section-label">Actualidade</p>
-    <h2 class="section-title">Notícias da <em>Figueira</em></h2>
-    <div class="divider"></div>
-    <p class="section-desc">As últimas novidades da cidade, imobiliário e região — em breve.</p>
+  <div class="noticias-header reveal">
+    <div>
+      <p class="section-label">Actualidade</p>
+      <h2 class="section-title">Notícias da <em>Figueira</em></h2>
+      <div class="divider"></div>
+      <p class="section-desc">As notícias mais relevantes ordenadas por engagement — o que a cidade está a falar.</p>
+    </div>
+    <div class="noticias-filter">
+      <button class="filter-btn active" onclick="filtrarNoticias('todos', this)">Todas</button>
+      <button class="filter-btn" onclick="filtrarNoticias('Diário de Coimbra', this)">Diário Coimbra</button>
+      <button class="filter-btn" onclick="filtrarNoticias('Diário As Beiras', this)">As Beiras</button>
+      <button class="filter-btn" onclick="filtrarNoticias('Figueira na Hora', this)">Figueira na Hora</button>
+      <button class="filter-btn" onclick="filtrarNoticias('Figueira da Foz', this)">Figueira.dafoz</button>
+    </div>
+  </div>
+  <div class="noticias-grid" id="noticias-grid">
+    <div class="loading">A carregar notícias...</div>
   </div>
 </section>
 
+<!-- SOBRE -->
 <section id="sobre">
   <div class="sobre-grid">
     <div class="reveal">
@@ -186,6 +252,7 @@
   </div>
 </section>
 
+<!-- IMOVEIS -->
 <section id="imoveis">
   <div class="reveal">
     <p class="section-label">Imobiliário</p>
@@ -201,6 +268,7 @@
   </div>
 </section>
 
+<!-- CONTACTO -->
 <section id="contacto">
   <div class="contacto-grid">
     <div class="reveal">
@@ -232,6 +300,7 @@ const SUPABASE_URL = 'https://kddjmksicdbudyyxqbfs.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZGpta3NpY2RidWR5eXhxYmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ2OTM1MzYsImV4cCI6MjA5MDI2OTUzNn0.PVOCfAHHRvk7DBjUqUaSrTmUD8klltpSpe5P9jij_rY';
 
 let todosEventos = [];
+let todasNoticias = [];
 
 async function carregarEventos() {
   try {
@@ -246,7 +315,20 @@ async function carregarEventos() {
   }
 }
 
-function getTipo(ev) {
+async function carregarNoticias() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/noticias?select=*&order=engagement.desc&limit=60`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    todasNoticias = await res.json();
+    renderNoticias(todasNoticias);
+  } catch(e) {
+    document.getElementById('noticias-grid').innerHTML = '<div class="loading">Não foi possível carregar as notícias.</div>';
+  }
+}
+
+function getTipoEvento(ev) {
   const t = ((ev.titulo || '') + ' ' + (ev.descricao || '')).toLowerCase();
   if (t.includes('teatro') || t.includes('comédia') || t.includes('peça')) return 'teatro';
   if (t.includes('cinema') || t.includes('filme')) return 'cinema';
@@ -256,10 +338,17 @@ function getTipo(ev) {
 }
 
 function filtrarEventos(tipo, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#eventos .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const filtrados = tipo === 'todos' ? todosEventos : todosEventos.filter(e => getTipo(e) === tipo);
+  const filtrados = tipo === 'todos' ? todosEventos : todosEventos.filter(e => getTipoEvento(e) === tipo);
   renderEventos(filtrados);
+}
+
+function filtrarNoticias(fonte, btn) {
+  document.querySelectorAll('#noticias .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtradas = fonte === 'todos' ? todasNoticias : todasNoticias.filter(n => n.fonte === fonte);
+  renderNoticias(filtradas);
 }
 
 function renderEventos(eventos) {
@@ -270,7 +359,7 @@ function renderEventos(eventos) {
   }
   const labels = { teatro: 'Teatro', cinema: 'Cinema', musica: 'Música', exposicao: 'Exposição', outro: 'Evento' };
   grid.innerHTML = eventos.map(ev => {
-    const tipo = getTipo(ev);
+    const tipo = getTipoEvento(ev);
     const img = ev.imagem_url
       ? `<div class="evento-img-wrap"><img class="evento-img" src="${ev.imagem_url}" alt="${ev.titulo||''}" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\\'evento-img-placeholder\\'>🎭</div>'"></div>`
       : '<div class="evento-img-placeholder">🎭</div>';
@@ -293,6 +382,44 @@ function renderEventos(eventos) {
   }).join('');
 }
 
+function formatarData(data_post) {
+  if (!data_post) return '';
+  const d = new Date(data_post);
+  return d.toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' });
+}
+
+function renderNoticias(noticias) {
+  const grid = document.getElementById('noticias-grid');
+  if (!noticias || noticias.length === 0) {
+    grid.innerHTML = '<div class="loading">Sem notícias disponíveis.</div>';
+    return;
+  }
+  grid.innerHTML = noticias.map(n => {
+    const img = n.imagem_url
+      ? `<div class="noticia-img-wrap"><img class="noticia-img" src="${n.imagem_url}" alt="${n.titulo||''}" loading="lazy" onerror="this.parentElement.outerHTML='<div class=\\'noticia-img-placeholder\\'>📰</div>'"></div>`
+      : '<div class="noticia-img-placeholder">📰</div>';
+    return `<div class="noticia-card">
+      ${img}
+      <div class="noticia-body">
+        <div class="noticia-meta">
+          <span class="noticia-fonte">${n.fonte || 'Figueira'}</span>
+          <span class="noticia-data">${formatarData(n.data_post)}</span>
+        </div>
+        <h3 class="noticia-titulo">${n.titulo || 'Sem título'}</h3>
+        ${n.resumo ? `<p class="noticia-resumo">${n.resumo}</p>` : ''}
+        <div class="noticia-footer">
+          <div class="noticia-engagement">
+            <span>❤️ ${n.likes || 0}</span>
+            <span>💬 ${n.comentarios || 0}</span>
+            ${n.visualizacoes ? `<span>👁️ ${n.visualizacoes}</span>` : ''}
+          </div>
+          ${n.instagram_url ? `<a href="${n.instagram_url}" target="_blank" class="noticia-link">Ver →</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
@@ -306,6 +433,7 @@ function enviarFormulario(e) {
 }
 
 carregarEventos();
+carregarNoticias();
 </script>
 </body>
 </html>
