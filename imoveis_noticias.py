@@ -29,8 +29,11 @@ from datetime import datetime, date
 from segredos import APIFY_TOKEN, ANTHROPIC_KEY, SUPABASE_URL, SUPABASE_KEY, RESEND_KEY
 
 APIFY_TASK_ID = "6aPcxLE72D0yPyDJ3"
-EMAIL_PARA    = "miguel.germano@gmail.com"
+EMAIL_PARA    = ["miguel.germano@gmail.com", "smonteiro76@gmail.com"]
 EMAIL_DE      = "noticias@miguelgermano.com"
+
+# Número máximo de dias para aceitar posts (posts mais antigos são ignorados)
+DIAS_MAXIMO   = 2
 
 # Nomes legíveis das fontes
 NOMES_FONTES = {
@@ -63,6 +66,30 @@ PALAVRAS_IMOVEIS = [
 
 # ─── APIFY ───────────────────────────────────────────────────────────────────
 
+def filtrar_posts_recentes(posts, dias=DIAS_MAXIMO):
+    """Filtra apenas posts com timestamp dentro dos últimos N dias."""
+    from datetime import timedelta
+    cutoff = datetime.utcnow() - timedelta(days=dias)
+    recentes = []
+    antigos = 0
+    sem_data = 0
+    for post in posts:
+        timestamp = post.get("timestamp")
+        if not timestamp:
+            sem_data += 1
+            continue
+        try:
+            data_post = datetime.fromisoformat(timestamp.replace("Z", "+00:00")).replace(tzinfo=None)
+            if data_post >= cutoff:
+                recentes.append(post)
+            else:
+                antigos += 1
+        except (ValueError, TypeError):
+            sem_data += 1
+    print(f"   📅 Filtro temporal ({dias} dias): {len(recentes)} recentes, {antigos} antigos ignorados, {sem_data} sem data")
+    return recentes
+
+
 def obter_posts_apify():
     print("📥 A obter posts do Apify (imobiliário)...")
     url = f"https://api.apify.com/v2/actor-tasks/{APIFY_TASK_ID}/runs/last/dataset/items?token={APIFY_TOKEN}"
@@ -72,6 +99,8 @@ def obter_posts_apify():
     # Filtra apenas posts válidos (não erros)
     posts_validos = [p for p in posts if p.get("shortCode") and not p.get("error")]
     print(f"   {len(posts_validos)} posts válidos obtidos (de {len(posts)} total)")
+    # Filtra posts recentes
+    posts_validos = filtrar_posts_recentes(posts_validos)
     return posts_validos
 
 
@@ -375,25 +404,42 @@ def enviar_email_resumo(novas, noticias):
     data = datetime.now().strftime("%d/%m/%Y")
 
     itens = "".join([f"""
-    <li style='margin-bottom:18px;border-left:2px solid #c9a96e;padding-left:12px'>
-        <strong style='font-size:15px'>{n.get('titulo','Sem título')}</strong><br>
-        <span style='color:#aaa;font-size:12px'>{n.get('fonte','') or ''} &nbsp;·&nbsp; ❤️ {n.get('likes',0)} likes</span><br>
-        {f'<span style="color:#ccc;font-size:13px;line-height:1.6">{n.get("resumo","")}</span><br>' if n.get('resumo') else ''}
-        {f'<a href="{n.get("instagram_url","")}" style="color:#c9a96e;font-size:12px;text-decoration:none">Ver fonte →</a>' if n.get('instagram_url') else ''}
-    </li>""" for n in noticias])
+            <li style='margin-bottom:20px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08)'>
+                {f'<img src="{n.get("imagem_url")}" style="width:100%;height:180px;object-fit:cover;display:block" alt="">' if n.get('imagem_url') else ''}
+                <div style='padding:16px 20px'>
+                    <strong style='font-size:15px;color:#1a1a1a;line-height:1.4;display:block;margin-bottom:6px'>{n.get('titulo','Sem título')}</strong>
+                    <span style='color:#999;font-size:12px'>{n.get('fonte','') or ''} &nbsp;·&nbsp; ❤️ {n.get('likes',0)} likes</span>
+                    {f'<p style="color:#555;font-size:13px;line-height:1.6;margin:10px 0 12px">{n.get("resumo","")}</p>' if n.get('resumo') else ''}
+                    {f'<a href="{n.get("instagram_url","")}" style="color:#b45309;font-size:13px;text-decoration:none;font-weight:500">Ver fonte →</a>' if n.get('instagram_url') else ''}
+                </div>
+            </li>""" for n in noticias])
 
-    html = f"""
-    <div style='font-family:sans-serif;max-width:620px;margin:0 auto;background:#0a0a0b;color:#f0ece4;padding:32px;border-radius:8px'>
-        <h2 style='color:#c9a96e;font-size:24px;margin-bottom:4px;font-weight:300'>Mercado Imobiliário</h2>
-        <p style='color:#6b6860;font-size:13px;margin-bottom:8px'>Resumo diário · {data}</p>
-        <div style='margin-bottom:28px'>
-            <span style='background:#1a1a1e;padding:4px 12px;border-radius:4px;font-size:12px;color:#c9a96e'>🏠 {novas} notícias</span>
-        </div>
-        <ul style='padding-left:0;list-style:none'>{itens}</ul>
-        <hr style='border-color:#222;margin:28px 0'>
-        <a href='https://miguelgermano.com#imoveis-noticias' style='color:#c9a96e;font-size:13px;text-decoration:none'>Ver no site →</a>
+    html = f"""<!DOCTYPE html>
+<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'></head>
+<body style='margin:0;padding:0;background:#f7f7f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif'>
+<div style='max-width:620px;margin:32px auto;padding:0 16px'>
+
+    <!-- Cabeçalho -->
+    <div style='background:#fff;border-radius:12px;padding:28px 32px 24px;margin-bottom:4px;box-shadow:0 1px 4px rgba(0,0,0,0.06)'>
+        <p style='color:#b45309;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 6px'>Resumo diário · {data}</p>
+        <h1 style='color:#1a1a1a;font-size:26px;font-weight:700;margin:0 0 4px'>Mercado Imobiliário</h1>
+        <p style='color:#999;font-size:14px;margin:0'>Notícias de habitação e imobiliário em Portugal</p>
     </div>
-    """
+
+    <!-- Conteúdo principal -->
+    <div style='background:#f7f7f7;padding:24px 0'>
+        <h3 style='color:#1a1a1a;margin:0 0 16px;font-size:18px;font-weight:600'>🏠 {novas} novas notícias</h3>
+        <ul style='padding-left:0;list-style:none;margin:0'>{itens}</ul>
+    </div>
+
+    <!-- Rodapé -->
+    <div style='text-align:center;padding:24px 0 40px'>
+        <a href='https://miguelgermano.com#imoveis-noticias' style='display:inline-block;background:#b45309;color:#fff;font-size:14px;font-weight:500;padding:12px 28px;border-radius:8px;text-decoration:none'>Ver no site</a>
+        <p style='color:#bbb;font-size:12px;margin:20px 0 0'>miguelgermano.com</p>
+    </div>
+
+</div>
+</body></html>"""
 
     try:
         r = requests.post(
@@ -408,7 +454,7 @@ def enviar_email_resumo(novas, noticias):
             timeout=30
         )
         if r.status_code in [200, 201]:
-            print(f"\n📧 Email enviado para {EMAIL_PARA}")
+            print(f"\n📧 Email enviado para {', '.join(EMAIL_PARA)}")
         else:
             print(f"\n⚠️  Erro ao enviar email: {r.status_code} — {r.text[:100]}")
     except Exception as e:
@@ -417,3 +463,5 @@ def enviar_email_resumo(novas, noticias):
 
 if __name__ == "__main__":
     main()
+    from consolidar_noticias import consolidar_tabela
+    consolidar_tabela("noticias_imoveis", dias=2)
