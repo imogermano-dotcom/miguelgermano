@@ -272,6 +272,12 @@ def main():
     print(f"   Data: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
+    # Sem execução ao fim-de-semana (mercado não actualiza, Apify não corre)
+    dia_semana = datetime.now().weekday()  # 5=Sábado, 6=Domingo
+    if dia_semana >= 5:
+        print(f"[imoveis_noticias] Fim-de-semana — execução ignorada.")
+        return
+
     posts = obter_posts_apify()
     if not posts:
         print("❌ Sem posts.")

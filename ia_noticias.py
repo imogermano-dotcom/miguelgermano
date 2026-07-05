@@ -511,6 +511,12 @@ def main():
     print(f"   Data: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("=" * 60)
 
+    # Sem scrape Apify ao fim-de-semana (poupança de recursos)
+    dia_semana = datetime.now().weekday()  # 5=Sábado, 6=Domingo
+    if dia_semana >= 5:
+        print(f"[ia_noticias] Fim-de-semana — scrape Apify ignorado.")
+        return
+
     # YouTube RSS
     print("\n📺 A obter vídeos YouTube...")
     videos_youtube = obter_videos_youtube()
